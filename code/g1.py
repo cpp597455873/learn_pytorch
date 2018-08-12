@@ -18,7 +18,8 @@ alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'
 ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
             'V', 'W', 'X', 'Y', 'Z']
 
-data_path = 'D:\\ml\\work2\\code\\train\\'
+# data_path = 'D:\\ml\\work2\\code\\train\\'
+data_path = 'E:\\ml\\startup\\learn_pytorch\\learn_pytorch\\code\\train\\'
 
 
 def random_captcha_text(char_set=number, captcha_size=4):  # 可以设置只用来生成数字
@@ -51,7 +52,7 @@ def gen_capthcha_text_and_image(m):
 
 if __name__ == '__main__':
 
-    for m in range(0, 5000):
+    for m in range(0, 1000):
         #          text,image = gen_capthcha_text_and_image()
         gen_capthcha_text_and_image(m)
 

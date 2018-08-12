@@ -104,7 +104,7 @@ class nCrossEntropyLoss(torch.nn.Module):
 
     def forward(self, output, label):
         output_t = output[:, 0:10]
-        label = Variable(torch.LongTensor(label.data.cpu().numpy())).cpu()
+        label = Variable(torch.LongTensor(label.data.cuda().numpy())).cuda()
         label_t = label[:, 0]
 
         for i in range(1, self.n):
@@ -126,7 +126,7 @@ def equal(np1, np2):
 
 
 def main():
-    net = ConvNet().cpu()
+    net = ConvNet().cuda()
     optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
     # loss_func = nn.CrossEntropyLoss()
     loss_func = nCrossEntropyLoss()
@@ -143,8 +143,8 @@ def main():
         for step, (inputs, label) in enumerate(dataloader):
 
             pred = torch.LongTensor(BATCH_SIZE, 1).zero_()
-            inputs = Variable(inputs).cpu()  # (bs, 3, 60, 240)
-            label = Variable(label).cpu()  # (bs, 4)
+            inputs = Variable(inputs).cuda()  # (bs, 3, 60, 240)
+            label = Variable(label).cuda()  # (bs, 4)
 
             optimizer.zero_grad()
 
@@ -153,13 +153,13 @@ def main():
 
             for i in range(4):
                 pre = F.log_softmax(output[:, 10 * i:10 * i + 10], dim=1)  # (bs, 10)
-                pred = torch.cat((pred, pre.data.max(1, keepdim=True)[1].cpu()), dim=1)  #
+                pred = torch.cat((pred, pre.data.max(1, keepdim=True)[1].cuda()), dim=1)  #
 
             loss.backward()
             optimizer.step()
 
             running_loss += loss.data[0] * inputs.size()[0]
-            running_corrects += equal(pred.numpy()[:, 1:], label.data.cpu().numpy().astype(int))
+            running_corrects += equal(pred.numpy()[:, 1:], label.data.cuda().numpy().astype(int))
 
         epoch_loss = running_loss / dataset_size
         epoch_acc = running_corrects / dataset_size
